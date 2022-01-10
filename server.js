@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const mongo = require("mongodb");
 const multer = require("multer");
 const path = require('path');
-const url = require("url")
+
 
 
 
@@ -17,6 +17,9 @@ var MongoClient = mongo.MongoClient;
 
 
 const port = process.env.PORT || 5000;
+const URL = "mongodb+srv://blog-api:blog-api@cluster0.ffmq0.mongodb.net/Blog-api?retryWrites=true&w=majority";
+
+
 
 var db;
 
@@ -68,15 +71,15 @@ app.post("/postcomment", (req, res) => {
 __dirname = path.resolve()
 
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static('/frontend/build'))
+    app.use(express.static('/build'))
 
     app.get("*", (req,res) => {
-        res.sendFile(path.resolve(__dirname,'frontend','build','index.html'))
+        res.sendFile(path.resolve(__dirname,'build','index.html'))
     })
 }
 
 
-MongoClient.connect(process.env.MONGO_URI, (err, client) => {
+MongoClient.connect(URL, (err, client) => {
     if (err) console.log(err);
     db = client.db('Blog-api');
     app.listen(port, () => {
